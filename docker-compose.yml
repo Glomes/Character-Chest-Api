@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # 1. Serviço do Banco de Dados PostgreSQL
+  db:
+    image: postgres:14-alpine
+    container_name: rpg_postgres_db
+    restart: always
+    environment:
+      # Essas variáveis devem ser as mesmas usadas no seu arquivo .env e db.ts
+      POSTGRES_USER: user_rpg
+      POSTGRES_PASSWORD: password_rpg
+      POSTGRES_DB: rpg_database
+    volumes:
+      # Persiste os dados do banco
+      - pgdata:/var/lib/postgresql/data
+      # Executa o schema.sql na inicialização do container (Cria as tabelas)
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      # Mapeia a porta do container para sua máquina local (opcional)
+      - "5432:5432" 
+
+  # 2. Serviço da API Node.js/Express
+  app:
+    build: . # O Docker irá procurar pelo arquivo Dockerfile nesta pasta
+    container_name: rpg_express_api
+    depends_on:
+      - db # Garante que o DB inicie antes da API
+    ports:
+      - "3000:3000" # Mapeia a porta 3000 (onde o Express roda)
+    volumes:
+      - .:/usr/src/app # Monta o código local no container (útil para hot-reload)
+      - /usr/src/app/node_modules # Impede que o node_modules local sobrescreva o do container
+    environment:
+      # Variáveis de ambiente passadas para a API
+      # ATENÇÃO: Use 'db' como HOST, pois é o nome do container do banco na rede Docker!
+      DB_HOST: db 
+      DB_PORT: 5432
+      DB_USER: user_rpg
+      DB_PASSWORD: password_rpg
+      DB_DATABASE: rpg_database
+    # Comando para rodar a API usando ts-node-dev (hot-reload)
+    command: npm run dev 
+
+volumes:
+  pgdata:

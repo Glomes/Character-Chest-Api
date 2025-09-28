@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    /* ... outras opções ... */
+
+    // 1. Defina 'module' para NodeNext ou ES2022
+    "module": "NodeNext", 
+
+    // 2. Defina 'moduleResolution' para NodeNext
+    // Isso diz ao TypeScript para usar a lógica de resolução de módulos do Node.js
+    "moduleResolution": "NodeNext", 
+    
+    // 3. (Opcional, mas recomendado) Defina o target para uma versão moderna do ECMAScript
+    "target": "ES2022",
+    
+    // 4. (Opcional, mas comum em projetos TS) 
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": ["src/**/*.ts"]
+}
