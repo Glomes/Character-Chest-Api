@@ -74,3 +74,44 @@ CREATE TABLE IF NOT EXISTS dnd5e_sheet (
         REFERENCES sheet (id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS cthulhu7e_sheet (
+    sheet_id UUID PRIMARY KEY REFERENCES sheet(id) ON DELETE CASCADE,
+    
+    -- Detalhes do Investigador
+    occupation VARCHAR(100),
+    age INTEGER,
+    birthplace VARCHAR(100),
+    academic_history VARCHAR(100),
+    
+    -- Estatísticas Principais
+    for_score INTEGER,
+    des_score INTEGER,
+    int_score INTEGER,
+    con_score INTEGER,
+    apa_score INTEGER, -- Aparência
+    pod_score INTEGER,
+    tam_score INTEGER, -- Tamanho
+    edu_score INTEGER,
+    
+    -- Pontos de Recurso
+    max_sanity INTEGER,
+    current_sanity INTEGER,
+    max_magic_points INTEGER,
+    current_magic_points INTEGER,
+    max_hit_points INTEGER,
+    current_hit_points INTEGER,
+
+    -- Bônus e Derivados
+    damage_bonus VARCHAR(10), -- Ex: '+1D4'
+    idea_score INTEGER,
+    know_score INTEGER, -- Saber
+    luck_score INTEGER,
+    
+    -- Campos JSONB para habilidades e detalhes complexos
+    skills JSONB, -- { 'antropologia': 1, 'arqueologia': 5, ... }
+    weapons JSONB,
+    equipment JSONB,
+    mythos_books JSONB,
+    artifacts_spells JSONB
+);
