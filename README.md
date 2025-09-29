@@ -36,13 +36,9 @@ npm install
 
 Spin up PostgreSQL with Docker Compose:
 ```bash
-docker-compose up -d postgres
+docker-compose up --build
 ```
 
-Run migrations (if a `migrate` script is available):
-```bash
-npm run migrate
-```
 
 ---
 
